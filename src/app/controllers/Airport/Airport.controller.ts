@@ -19,11 +19,13 @@ export class AirportController {
                 return "Error";
 
             function toLatLng(text: string): LatLng {
+                let west: boolean = text.includes("W");
+                let south: boolean = text.includes("S");
                 text = text.replace(/(\s\/\s)/g, ' ').replace(/(\s+[A-Z]\s*)/g, ' ').trim();
                 let coordinates = text.split(" ");
-                let lat: string = coordinates[0];
-                let lng: string = coordinates[1];
-                return new LatLng(degreesMinutesSecondsToDecimalDegrees(lat), degreesMinutesSecondsToDecimalDegrees(lng));
+                let lat: number = degreesMinutesSecondsToDecimalDegrees(coordinates[0]) * (south ? -1 : 1);
+                let lng: number = degreesMinutesSecondsToDecimalDegrees(coordinates[1]) * (west ? -1 : 1);
+                return new LatLng(lat, lng);
             }
 
             function degreesMinutesSecondsToDecimalDegrees(text: string): number {
